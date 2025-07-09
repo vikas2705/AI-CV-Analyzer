@@ -4,6 +4,7 @@ import type { UploadRequest, UploadError } from "../types/upload";
 
 interface UseFileUploadReturn {
   response: string;
+  setResponse: (response: string) => void;
   loading: boolean;
   error: UploadError | null;
   uploadFiles: (files: UploadRequest) => Promise<void>;
@@ -42,6 +43,7 @@ export const useFileUpload = (): UseFileUploadReturn => {
 
   return {
     response,
+    setResponse,
     loading,
     error,
     uploadFiles,

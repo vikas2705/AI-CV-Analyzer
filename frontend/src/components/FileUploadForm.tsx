@@ -6,7 +6,8 @@ import { validateFiles } from "../utils/fileValidation";
 export const FileUploadForm = () => {
   const [cvFile, setCvFile] = useState<File | null>(null);
   const [jdFile, setJdFile] = useState<File | null>(null);
-  const { response, loading, error, uploadFiles, clearError } = useFileUpload();
+  const { response, setResponse, loading, error, uploadFiles, clearError } =
+    useFileUpload();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -46,7 +47,10 @@ export const FileUploadForm = () => {
             {cvFile && (
               <button
                 type="button"
-                onClick={() => setCvFile(null)}
+                onClick={() => {
+                  setCvFile(null);
+                  setResponse("");
+                }}
                 className="mt-2 text-sm bg-red-100 hover:bg-red-200 text-red-600 px-3 py-1 rounded">
                 Remove
               </button>
@@ -73,7 +77,10 @@ export const FileUploadForm = () => {
             {jdFile && (
               <button
                 type="button"
-                onClick={() => setJdFile(null)}
+                onClick={() => {
+                  setJdFile(null);
+                  setResponse("");
+                }}
                 className="mt-2 text-sm bg-red-100 hover:bg-red-200 text-red-600 px-3 py-1 rounded">
                 Remove
               </button>
