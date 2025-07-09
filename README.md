@@ -61,10 +61,13 @@ npm install
 
 ### 3. Environment Configuration
 
+#### Backend Environment Variables
+
 Create a `.env` file in the `backend` folder with the following variables:
 
 ```env
 # Server Configuration
+PORT=4000
 CLIENT_ORIGIN=http://localhost:5173
 
 # Google Gemini AI Configuration
@@ -72,6 +75,17 @@ GEMINI_URL=https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:ge
 GEMINI_AUTH_TOKEN=your_gemini_auth_token_here
 GOOGLE_API_KEY=your_google_api_key_here
 ```
+
+#### Frontend Environment Variables
+
+Create a `.env` file in the `frontend` folder with the following variables:
+
+```env
+# API Configuration
+VITE_API_BASE_URL=http://localhost:4000
+```
+
+**Note**: The `VITE_` prefix is required for Vite to expose environment variables to the frontend application.
 
 ### 4. Google Cloud Service Account Setup
 
@@ -151,7 +165,20 @@ AI-CV-Analyzer/
     │   ├── App.tsx           # Main React component
     │   ├── components/
     │   │   └── FileUploadForm.tsx  # File upload component
+    │   ├── config/
+    │   │   └── environment.ts      # Environment configuration
+    │   ├── constants/
+    │   │   └── api.ts              # API route constants
+    │   ├── hooks/
+    │   │   └── useFileUpload.ts    # Custom upload hook
+    │   ├── services/
+    │   │   └── fileSubmit.ts       # File upload service
+    │   ├── types/
+    │   │   └── upload.ts           # TypeScript interfaces
+    │   ├── utils/
+    │   │   └── fileValidation.ts   # File validation utilities
     │   └── main.tsx          # React entry point
+    ├── .env                  # Frontend environment variables (create this)
     └── package.json          # Frontend dependencies
 ```
 
@@ -160,24 +187,53 @@ AI-CV-Analyzer/
 - `POST /upload` - Upload PDF files for analysis
 - `POST /trpc/analyzeCV` - Analyze uploaded CV using Gemini AI
 
+## Architecture
+
+The application follows a clean, modular architecture with proper separation of concerns:
+
+### Frontend Architecture
+
+- **Components**: Reusable UI components with clear responsibilities
+- **Services**: Business logic and API communication layer
+- **Hooks**: Custom React hooks for state management
+- **Types**: TypeScript interfaces for type safety
+- **Utils**: Utility functions for validation and common operations
+- **Config**: Environment and configuration management
+
+### Backend Architecture
+
+- **Routes**: API endpoint definitions
+- **Utils**: Business logic and external service integrations
+- **Config**: Environment and configuration management
+
 ## Environment Variables
 
-| Variable            | Description                    | Required |
-| ------------------- | ------------------------------ | -------- |
-| `PORT`              | Backend server port            | Yes      |
-| `CLIENT_ORIGIN`     | Frontend URL for CORS          | Yes      |
-| `GEMINI_URL`        | Gemini AI API endpoint         | Yes      |
-| `GEMINI_AUTH_TOKEN` | Gemini AI authentication token | Yes      |
-| `GOOGLE_API_KEY`    | Google Cloud API key           | Yes      |
+### Backend Variables
+
+| Variable            | Description                    | Required | Default |
+| ------------------- | ------------------------------ | -------- | ------- |
+| `PORT`              | Backend server port            | No       | 4000    |
+| `CLIENT_ORIGIN`     | Frontend URL for CORS          | Yes      | -       |
+| `GEMINI_URL`        | Gemini AI API endpoint         | Yes      | -       |
+| `GEMINI_AUTH_TOKEN` | Gemini AI authentication token | Yes      | -       |
+| `GOOGLE_API_KEY`    | Google Cloud API key           | Yes      | -       |
+
+### Frontend Variables
+
+| Variable            | Description          | Required | Default               |
+| ------------------- | -------------------- | -------- | --------------------- |
+| `VITE_API_BASE_URL` | Backend API base URL | No       | http://localhost:4000 |
 
 ## Troubleshooting
 
 ### Common Issues
 
-1. **CORS Errors**: Ensure `CLIENT_ORIGIN` in your `.env` file matches your frontend URL
-2. **Authentication Errors**: Verify your Google Cloud credentials and API keys
-3. **Port Conflicts**: Change the `PORT` in `.env` if 3001 is already in use
-4. **PDF Processing Errors**: Ensure uploaded files are valid PDF documents
+1. **CORS Errors**: Ensure `CLIENT_ORIGIN` in your backend `.env` file matches your frontend URL
+2. **API Connection Errors**: Verify `VITE_API_BASE_URL` in your frontend `.env` file points to the correct backend URL
+3. **Authentication Errors**: Verify your Google Cloud credentials and API keys
+4. **Port Conflicts**: Change the `PORT` in backend `.env` if 4000 is already in use
+5. **PDF Processing Errors**: Ensure uploaded files are valid PDF documents
+6. **Environment Variables Not Loading**: Make sure `.env` files are in the correct directories and have the right variable names
 
 ### Getting Google Cloud Credentials
 
